@@ -156,7 +156,7 @@ function computer() {
       // add
       return {
         [c]: int(mem[a] + mem[b]),
-        0: mem[0] + 4
+        0: int(mem[0] + 4)
       };
     } else if (op == 2) {
       // jump to
@@ -167,7 +167,7 @@ function computer() {
       // copy
       return {
         [b]: mem[a],
-        0: mem[0] + 3
+        0: int(mem[0] + 3)
       };
     }
     return {};
@@ -178,6 +178,7 @@ function computer() {
     mem = { ...rom };
     history = [];
     for (let i = 0; i < L; i++) {
+      if (!mem[i]) mem[i] = 0;
       drawCell(i);
     }
   }
@@ -225,4 +226,6 @@ computer();
  * - cap history size
  * - render speed controls (how many CPU cycles per frame)
  * - hex/dec/ascii mode toggle
+ * - n-bits mode toggle
+ * - step forward n steps button
  */
