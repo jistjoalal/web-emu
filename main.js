@@ -9,7 +9,7 @@ function computer() {
   const FONT = "12px monospace";
 
   let cvs, ctx;
-  let mem = { ...ROMS.FIB };
+  let mem = {};
   let history = [];
   let halt = true;
 
@@ -18,12 +18,15 @@ function computer() {
   }
 
   function int(n) {
-    return n % L;
+    return (~~n + L) % L;
   }
 
   function init() {
+    for (let i = 0; i < L; i++) {
+      mem[i] = 0;
+    }
     initControls();
-    initScreen();
+    initGrid();
   }
 
   function initControls() {
@@ -68,7 +71,6 @@ function computer() {
     /**
      * rom list
      */
-    // rom list
     const romList = document.createElement("ul");
     container.appendChild(romList);
     function addRom(title) {
@@ -96,13 +98,35 @@ function computer() {
     });
   }
 
-  function initScreen() {
+  function initGrid() {
+    // canvas
     cvs = document.createElement("canvas");
     ctx = cvs.getContext("2d");
+    root.appendChild(cvs);
     cvs.width = S * UI_SCALE;
     cvs.height = S * UI_SCALE;
     ctx.font = FONT;
-    root.appendChild(cvs);
+    // mouse input
+    function getIndex(e) {
+      const [y, x] = [
+        ~~((e.clientY - cvs.offsetTop) / UI_SCALE),
+        ~~((e.clientX - cvs.offsetLeft) / UI_SCALE)
+      ];
+      return y * S + x;
+    }
+    cvs.addEventListener("click", e => {
+      if (!halt) return;
+      const i = getIndex(e);
+      mem[i] = int(mem[i] + 1);
+      drawCell(i);
+    });
+    cvs.addEventListener("contextmenu", e => {
+      e.preventDefault();
+      if (!halt) return;
+      const i = getIndex(e);
+      mem[i] = int(mem[i] - 1);
+      drawCell(i);
+    });
     // initial render
     for (let i = 0; i < L; i++) {
       drawCell(i);
@@ -116,7 +140,7 @@ function computer() {
     let d = c > 127 ? 0 : 255;
     let [y, x] = [~~(i / S), i % S];
     let [sy, sx] = [y * UI_SCALE, x * UI_SCALE];
-    let text = mem[i] || 0;
+    let text = mem[i];
     // background
     ctx.fillStyle = `rgb(${c},${c},${c})`;
     ctx.fillRect(sx, sy, UI_SCALE, UI_SCALE);
@@ -199,7 +223,6 @@ computer();
  * - permanent ROM storage
  * - history display
  * - cap history size
- * - scroll to set cell
  * - render speed controls (how many CPU cycles per frame)
  * - hex/dec/ascii mode toggle
  */
