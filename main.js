@@ -27,10 +27,17 @@ function computer() {
   }
 
   function initControls() {
-    // controls container
+    /**
+     * container
+     */
     const container = document.createElement("div");
+    container.style.display = "flex";
+    container.style.alignItems = "center";
     root.appendChild(container);
-    // buttons
+
+    /**
+     * buttons
+     */
     function createButton(text, onClick) {
       const button = document.createElement("button");
       container.appendChild(button);
@@ -56,6 +63,36 @@ function computer() {
     createButton("step back", e => {
       if (!halt || !history.length) return;
       cycleBack();
+    });
+
+    /**
+     * rom list
+     */
+    // rom list
+    const romList = document.createElement("ul");
+    container.appendChild(romList);
+    function addRom(title) {
+      const item = document.createElement("li");
+      romList.appendChild(item);
+      item.innerHTML = title;
+      item.addEventListener("click", e => {
+        load(ROMS[title]);
+      });
+    }
+    for (let title in ROMS) {
+      addRom(title);
+    }
+    // save
+    const saveTitleInput = document.createElement("input");
+    container.appendChild(saveTitleInput);
+    saveTitleInput.type = "text";
+    saveTitleInput.placeholder = "Title";
+    createButton("Save", e => {
+      const title = saveTitleInput.value;
+      if (!title) return;
+      ROMS[title] = { ...mem };
+      saveTitleInput.value = "";
+      addRom(title);
     });
   }
 
@@ -112,6 +149,15 @@ function computer() {
     return {};
   }
 
+  function load(rom) {
+    halt = true;
+    mem = { ...rom };
+    history = [];
+    for (let i = 0; i < L; i++) {
+      drawCell(i);
+    }
+  }
+
   function apply(changes) {
     mem = { ...mem, ...changes };
     for (let k in changes) {
@@ -150,7 +196,7 @@ computer();
 
 /**
  * TODO:
- * - ROM load/save selection
+ * - permanent ROM storage
  * - history display
  * - cap history size
  * - scroll to set cell

@@ -1,5 +1,5 @@
 export default {
-  COUNTER: [
+  Counter: [
     // pc
     1,
     // R[7] + R[8] -> R[8]
@@ -14,7 +14,7 @@ export default {
     1,
     0
   ],
-  FIB: [
+  Fibonacci: [
     // pc
     1,
     // R[14] -> R[15]
