@@ -30,6 +30,7 @@ export default class Computer {
     }
   }
   save(changes) {
+    if (JSON.stringify(changes) == "{}") return;
     let inverseChanges = {};
     for (let k in changes) {
       inverseChanges[k] = this.mem[k];
