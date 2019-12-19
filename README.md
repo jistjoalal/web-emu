@@ -4,6 +4,7 @@ Emulating simple CPU's for fun and learning. Inspired by [n2t](https://www.nand2
 
 ## Notes / Todo
 
+- shouldn't push empty changes to history
 - permanent ROM storage
 - delete ROM button
 - history display

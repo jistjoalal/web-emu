@@ -17,8 +17,8 @@ export default class Computer {
   }
   load(rom) {
     this.halt = true;
-    for (let k in rom) {
-      this.mem[k] = rom[k];
+    for (let k = 0; k < this.bw.L; k++) {
+      this.mem[k] = rom[k] || 0;
       this.display.drawCell(k);
     }
     this.history = [];
