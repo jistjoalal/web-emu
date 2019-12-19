@@ -65,7 +65,7 @@ export default class Controls {
     this.createButton("Save", e => {
       const title = saveTitleInput.value;
       if (!title) return;
-      ROMS[title] = { ...mem };
+      ROMS[title] = { ...this.comp.mem };
       saveTitleInput.value = "";
       addRom(title);
     });
