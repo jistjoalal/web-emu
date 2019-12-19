@@ -11,6 +11,7 @@ Emulating simple CPU's for fun and learning. Inspired by [n2t](https://www.nand2
 - history display
 - cap history size
 - render speed controls (how many CPU cycles per frame)
+- step forward n steps button
 - hex/dec/ascii mode toggle
 - n-bits mode toggle
-- step forward n steps button
+- better program input

@@ -1,6 +1,9 @@
 export default function CPU(mem, int) {
   let pc = mem[0];
-  let [op, a, b, c] = [mem[pc], mem[pc + 1], mem[pc + 2], mem[pc + 3]];
+  let op = mem[int(pc)];
+  let a = mem[int(pc + 1)];
+  let b = mem[int(pc + 2)];
+  let c = mem[int(pc + 3)];
   if (op == 1) {
     // add
     return {
