@@ -9,6 +9,7 @@ export default class Computer {
     this.mem = {};
     this.history = [];
     this.halt = true;
+    this.speed = 1;
     for (let i = 0; i < this.bw.L; i++) {
       this.mem[i] = 0;
     }
@@ -23,15 +24,13 @@ export default class Computer {
     }
     this.history = [];
   }
-  apply(changes) {
-    this.mem = { ...this.mem, ...changes };
+  updateDisplay(changes) {
     for (let k in changes) {
       this.display.drawCell(k);
     }
   }
   save(changes) {
     if (JSON.stringify(changes) == "{}") {
-      this.halt = true;
       return;
     }
     let inverseChanges = {};
@@ -42,17 +41,23 @@ export default class Computer {
     this.history.push(inverseChanges);
   }
   run() {
-    this.cycleForward();
+    this.cycle(this.speed);
     if (!this.halt) requestAnimationFrame(this.run.bind(this));
   }
-  cycleForward() {
-    let changes = CPU(this.mem, this.int.bind(this));
-    this.save(changes);
-    this.apply(changes);
-  }
-  cycleBack() {
-    let changes = this.history.pop();
-    this.apply(changes);
+  cycle(n) {
+    let batchChanges = {};
+    for (let i = 0; i < Math.abs(n); i++) {
+      let changes = {};
+      if (n > 0) {
+        changes = CPU(this.mem, this.int.bind(this));
+        this.save(changes);
+      } else {
+        changes = this.history.pop();
+      }
+      batchChanges = { ...batchChanges, ...changes };
+      this.mem = { ...this.mem, ...changes };
+    }
+    this.updateDisplay(batchChanges);
   }
   int(n) {
     return (~~n + this.bw.L) % this.bw.L;

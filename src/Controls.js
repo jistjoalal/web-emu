@@ -3,44 +3,64 @@ import ROMS from "./roms.js";
 export default class Controls {
   constructor(root, comp) {
     this.comp = comp;
-    /**
-     * container
-     */
+
     this.container = document.createElement("div");
-    this.container.style.display = "flex";
-    this.container.style.alignItems = "center";
+    // this.container.style.display = "flex";
+    // this.container.style.flexWrap = "wrap";
+    // this.container.style.alignItems = "flex-end";
+    // this.container.style.justifyContent = "center";
+    this.container.style.float = "left";
     root.appendChild(this.container);
 
     this.initButtons();
     this.initRomList();
   }
-  createButton(text, onClick) {
+
+  createButton(text, parent, onClick) {
     const button = document.createElement("button");
-    this.container.appendChild(button);
+    parent.appendChild(button);
     button.innerHTML = text;
     button.addEventListener("click", onClick);
   }
 
   initButtons() {
+    const buttons = document.createElement("div");
+    this.container.appendChild(buttons);
     // pause
-    this.createButton("pause", e => {
+    this.createButton("pause", buttons, e => {
       this.comp.halt = true;
     });
     // play
-    this.createButton("play", e => {
+    this.createButton("play", buttons, e => {
       if (!this.comp.halt) return;
       this.comp.halt = false;
       this.comp.run();
     });
     // step forward
-    this.createButton("step forward", e => {
+    this.createButton("step forward", buttons, e => {
       if (!this.comp.halt) return;
-      this.comp.cycleForward();
+      this.comp.cycle(this.comp.speed);
     });
     // step back
-    this.createButton("step back", e => {
-      if (!this.comp.halt || !this.comp.history.length) return;
-      this.comp.cycleBack();
+    this.createButton("step back", buttons, e => {
+      if (!this.comp.halt) return;
+      this.comp.cycle(-this.comp.speed);
+    });
+    // speed input
+    const speed = document.createElement("div");
+    buttons.appendChild(speed);
+    const text = document.createTextNode("speed: ");
+    speed.appendChild(text);
+    const input = document.createElement("input");
+    speed.appendChild(input);
+    input.style.width = "4em";
+    input.min = -1e3;
+    input.max = 1e3;
+    input.type = "number";
+    input.value = this.comp.speed;
+    input.addEventListener("change", e => {
+      const speed = input.value;
+      this.comp.speed = speed;
     });
   }
   initRomList() {
@@ -54,20 +74,21 @@ export default class Controls {
         this.comp.load(ROMS[title]);
       });
     };
-    for (let title in ROMS) {
-      addRom(title);
-    }
-    // save
+    // save input + button
     const saveTitleInput = document.createElement("input");
-    this.container.appendChild(saveTitleInput);
+    romList.appendChild(saveTitleInput);
     saveTitleInput.type = "text";
     saveTitleInput.placeholder = "Title";
-    this.createButton("Save", e => {
+    this.createButton("Save", romList, e => {
       const title = saveTitleInput.value;
       if (!title) return;
       ROMS[title] = { ...this.comp.mem };
       saveTitleInput.value = "";
       addRom(title);
     });
+    // list
+    for (let title in ROMS) {
+      addRom(title);
+    }
   }
 }

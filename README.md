@@ -8,10 +8,12 @@ Emulating simple CPU's for fun and learning. Inspired by [n2t](https://www.nand2
 
 - permanent ROM storage
 - delete ROM button
+- toggle collapse rom list (default hidden mobile)
+
 - history display
 - cap history size
-- render speed controls (how many CPU cycles per frame)
-- step forward n steps button
+
 - hex/dec/ascii mode toggle
 - n-bits mode toggle
-- better program input
+
+- did adding speed controls slow down wider machines?
