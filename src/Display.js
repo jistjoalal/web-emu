@@ -31,14 +31,15 @@ export default class Display {
     this.cvs.addEventListener("click", e => {
       if (!this.comp.halt) return;
       const i = getIndex(e);
-      this.comp.mem[i] = this.comp.int(this.comp.mem[i] + 1);
+      const val = ~~prompt(`R[${i}]:`, 0);
+      this.comp.mem[i] = this.comp.int(val);
       this.drawCell(i);
     });
     this.cvs.addEventListener("contextmenu", e => {
       e.preventDefault();
       if (!this.comp.halt) return;
       const i = getIndex(e);
-      this.comp.mem[i] = this.comp.int(this.comp.mem[i] - 1);
+      this.comp.mem[i] = 0;
       this.drawCell(i);
     });
   }
