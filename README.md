@@ -8,7 +8,6 @@ Emulating simple CPU's for fun and learning. Inspired by [n2t](https://www.nand2
 
 - permanent ROM storage
 - delete ROM button
-- toggle collapse rom list (default hidden mobile)
 
 - history display
 - cap history size

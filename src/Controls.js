@@ -64,6 +64,10 @@ export default class Controls {
     });
   }
   initRomList() {
+    this.createButton("ROM List", this.container, e => {
+      let d = romList.style.display;
+      romList.style.display = d ? "" : "none";
+    });
     const romList = document.createElement("ul");
     this.container.appendChild(romList);
     const addRom = title => {
