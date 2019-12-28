@@ -1,5 +1,6 @@
 export default class Display {
-  constructor(root, comp) {
+  constructor(root, comp, color = false) {
+    this.color = color;
     this.comp = comp;
     this.cvs = document.createElement("canvas");
     this.ctx = this.cvs.getContext("2d");
@@ -51,11 +52,18 @@ export default class Display {
     let [y, x] = [~~(i / this.comp.bw.S), i % this.comp.bw.S];
     let [sy, sx] = [y * this.UI_SCALE, x * this.UI_SCALE];
     let text = this.comp.mem[i];
+
+    let bgColor = `rgb(${c},${c},${c})`;
+    let fgColor = `rgb(${d},${d},${d})`;
+    if (this.color) {
+      bgColor = `hsl(${c},100%,20%)`;
+      fgColor = `rgb(${d},${d},${d})`;
+    }
     // background
-    this.ctx.fillStyle = `rgb(${c},${c},${c})`;
+    this.ctx.fillStyle = bgColor;
     this.ctx.fillRect(sx, sy, this.UI_SCALE, this.UI_SCALE);
     // text
-    this.ctx.fillStyle = `rgb(${d},${d},${d})`;
+    this.ctx.fillStyle = fgColor;
     this.ctx.fillText(text, sx + 1, sy + this.UI_SCALE / 1.6);
   }
 }
