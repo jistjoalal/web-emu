@@ -10,7 +10,6 @@ export default class Controls {
 
     this.initButtons();
     this.initRomList();
-    this.initHistory();
   }
 
   createButton(text, parent, onClick) {
@@ -91,37 +90,5 @@ export default class Controls {
     for (let title in ROMS) {
       addRom(title);
     }
-  }
-
-  initHistory() {
-    this.createButton("History", this.container, e => {
-      let d = this.history.style.display;
-      this.history.style.display = d ? "" : "none";
-    });
-    this.history = document.createElement("ol");
-    this.history.style.overflow = "scroll";
-    this.history.style.height = "200px";
-    this.container.appendChild(this.history);
-  }
-
-  addHistoryChanges(changes) {
-    for (let change of changes) {
-      const li = document.createElement("li");
-      this.history.appendChild(li);
-      li.style.borderBottom = "1px solid black";
-      li.style.background = "#eee";
-      li.innerHTML = `<pre>${JSON.stringify(change, null, 2)}</pre>`;
-      this.history.scrollTop = this.history.scrollHeight;
-    }
-  }
-
-  popHistoryChange(n) {
-    for (let i = 0; i < n && this.history.children.length; i++) {
-      this.history.removeChild(this.history.lastChild);
-    }
-  }
-
-  clearHistory() {
-    this.history.innerHTML = "";
   }
 }

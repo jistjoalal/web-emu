@@ -23,7 +23,6 @@ export default class Computer {
       this.display.drawCell(k);
     }
     this.history = [];
-    this.controls.clearHistory();
   }
   save(changes) {
     let inverseChanges = {};
@@ -39,8 +38,6 @@ export default class Computer {
   }
   cycle(n) {
     let batchChanges = {};
-    let listChanges = [];
-    let historyPopped = 0;
     for (let i = 0; i < Math.abs(n); i++) {
       let changes = {};
       // moving forward in time
@@ -52,15 +49,11 @@ export default class Computer {
       // moving backward in time
       else if (this.history.length) {
         changes = this.history.pop();
-        historyPopped++;
       }
-      listChanges.push(changes);
       batchChanges = { ...batchChanges, ...changes };
       this.mem = { ...this.mem, ...changes };
     }
 
-    if (n > 0) this.controls.addHistoryChanges(listChanges);
-    else this.controls.popHistoryChange(historyPopped);
     this.display.update(batchChanges);
   }
   int(n) {
