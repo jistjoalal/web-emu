@@ -30,9 +30,6 @@ export default class Computer {
     }
   }
   save(changes) {
-    if (JSON.stringify(changes) == "{}") {
-      return;
-    }
     let inverseChanges = {};
     for (let k in changes) {
       inverseChanges[k] = this.mem[k];
@@ -46,17 +43,28 @@ export default class Computer {
   }
   cycle(n) {
     let batchChanges = {};
+    let listChanges = [];
+    let historyPopped = 0;
     for (let i = 0; i < Math.abs(n); i++) {
       let changes = {};
+      // moving forward in time
       if (n > 0) {
         changes = CPU(this.mem, this.int.bind(this));
+        if (JSON.stringify(changes) == "{}") break;
         this.save(changes);
-      } else {
-        changes = this.history.pop();
       }
+      // moving backward in time
+      else if (this.history.length) {
+        changes = this.history.pop();
+        historyPopped++;
+      }
+      listChanges.push(changes);
       batchChanges = { ...batchChanges, ...changes };
       this.mem = { ...this.mem, ...changes };
     }
+
+    if (n > 0) this.controls.addHistoryChanges(listChanges);
+    else this.controls.popHistoryChange(historyPopped);
     this.updateDisplay(batchChanges);
   }
   int(n) {

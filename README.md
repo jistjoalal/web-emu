@@ -9,10 +9,14 @@ Emulating simple CPU's for fun and learning. Inspired by [n2t](https://www.nand2
 - permanent ROM storage
 - delete ROM button
 
-- history display
+- perf issues with large history
 - cap history size
+
+  - possibly by detecting loops / halts ?
 
 - hex/dec/ascii mode toggle
 - n-bits mode toggle
 
 - did adding speed controls slow down wider machines?
+- move updateDisplay to display class
+- css file
