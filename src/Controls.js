@@ -120,4 +120,8 @@ export default class Controls {
       this.history.removeChild(this.history.lastChild);
     }
   }
+
+  clearHistory() {
+    this.history.innerHTML = "";
+  }
 }

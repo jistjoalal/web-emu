@@ -18,5 +18,7 @@ Emulating simple CPU's for fun and learning. Inspired by [n2t](https://www.nand2
 - n-bits mode toggle
 
 - did adding speed controls slow down wider machines?
+- canvas listeners should work w/ speed=0?
+
 - move updateDisplay to display class
 - css file

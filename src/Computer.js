@@ -17,12 +17,13 @@ export default class Computer {
     this.display = new Display(root, this);
   }
   load(rom) {
-    this.halt = true;
+    if (!this.halt) return;
     for (let k = 0; k < this.bw.L; k++) {
       this.mem[k] = rom[k] || 0;
       this.display.drawCell(k);
     }
     this.history = [];
+    this.controls.clearHistory();
   }
   updateDisplay(changes) {
     for (let k in changes) {
