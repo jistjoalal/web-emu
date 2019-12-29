@@ -25,11 +25,6 @@ export default class Computer {
     this.history = [];
     this.controls.clearHistory();
   }
-  updateDisplay(changes) {
-    for (let k in changes) {
-      this.display.drawCell(k);
-    }
-  }
   save(changes) {
     let inverseChanges = {};
     for (let k in changes) {
@@ -66,7 +61,7 @@ export default class Computer {
 
     if (n > 0) this.controls.addHistoryChanges(listChanges);
     else this.controls.popHistoryChange(historyPopped);
-    this.updateDisplay(batchChanges);
+    this.display.update(batchChanges);
   }
   int(n) {
     return (~~n + this.bw.L) % this.bw.L;

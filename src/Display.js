@@ -44,6 +44,11 @@ export default class Display {
       this.drawCell(i);
     });
   }
+  update(changes) {
+    for (let k in changes) {
+      this.drawCell(k);
+    }
+  }
   drawCell(i) {
     // c = background color
     let c = ~~(this.comp.mem[i] * (256 / this.comp.bw.L));
