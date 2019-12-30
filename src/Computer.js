@@ -28,7 +28,6 @@ export default class Computer {
     let inverseChanges = {};
     for (let k in changes) {
       inverseChanges[k] = this.mem[k];
-      this.display.drawCell(k);
     }
     this.history.push(inverseChanges);
   }
@@ -50,8 +49,8 @@ export default class Computer {
       else if (this.history.length) {
         changes = this.history.pop();
       }
-      batchChanges = { ...batchChanges, ...changes };
-      this.mem = { ...this.mem, ...changes };
+      Object.assign(batchChanges, changes);
+      Object.assign(this.mem, changes);
     }
 
     this.display.update(batchChanges);
